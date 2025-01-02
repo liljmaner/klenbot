@@ -1,0 +1,656 @@
+{
+    "welcome_msg": 
+    { 
+        "msg": "Добро пожаловать в KlenRestBot пройдите регистрацию",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Пройти регистрацию", "callback_data": "reg_phase"}
+                    ]
+                ]
+            }
+        }
+    },
+    "main_msg": 
+    { 
+        "msg": "Добро пожаловать в KlenRestBot",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Технологические карты", "callback_data": "technological_maps"}
+                    ],
+                    [
+                        {"text": "Списание", "callback_data": "write_off"}
+                    ],
+                    [
+                        {"text": "Инвентаризация", "callback_data": "inventory"}
+                    ],
+                    [
+                        {"text": "Продажи", "callback_data": "sales"}
+                    ],
+                    [
+                        {"text": "Приход", "callback_data": "coming"}
+                    ]
+                ]
+            }
+        }
+    },
+    "write_off": 
+    {
+        "msg": "Выберите действие ",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Создание списания", "callback_data": "create_writeoff"}
+                    ],
+                    [
+                        {"text": "Корректирование списаний", "callback_data": "change_writeoff"}
+                    ],
+                    [
+                        {"text": "Просмотр списаний", "callback_data": "show_writeoff"}
+                    ]
+                ]
+            }
+        }
+    },
+    "create_writeoff": 
+    { 
+        "msg": "Напишите какие продукты списываете и почему по следующей форме:\nДата\nНазвание продукта | причина списания",
+        "phases": {
+            "create_writeoff": 1
+        },
+        "msg_options": { }
+    },
+    "sucess_createwriteoff": 
+    {
+        "msg": "Списание было произведено успешно.\nПотраченные продукты были вычеркнуты из инвентаризации",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "show_writeoff": 
+    {
+        "msg": "Введите дату или период дат для просмотра списаний по следующей форме:\nдд.мм.гг - дд.мм.гг",
+        "phases": {
+            "show_writeoff": 1
+        },
+        "msg_options": { }
+    },
+    "get_writeoff": 
+    { 
+        "msg": "Вот что получилось найти: Data",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "change_writeoff": 
+    {
+        "msg": "Введите дату списания, которую хотите корректировать по следующей форме\nдд.мм.гг",
+        "phases": {
+            "get_writeoff_for_change": 1
+        },
+        "msg_options": { }
+    },
+    "get_writeoff_for_change": 
+    {
+        "msg": "Вот что получилось найти:Data\n\n",
+        "phases": {
+            "get_data_writeoff_for_change": 1
+        },
+        "msg_options": { }
+    },
+    "sucess_changewriteoff": 
+    {
+        "msg": "Корректировка прошла успешно",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "coming": 
+    {
+        "msg": "Выберите действие ",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Создание прихода", "callback_data": "create_coming"}
+                    ],
+                    [
+                        {"text": "Корректирование прихода", "callback_data": "change_coming"}
+                    ]
+                ]
+            }
+        }
+    },
+    "create_coming": 
+    {
+        "msg": "Создайте приход продуктов по следующей форме:\nДата прихода\nНазвание продукта | Вес продуктов | Стоимость Продуктов | Срок Годности",
+        "phases": {
+            "create_coming": 1
+        },
+        "msg_options": {}
+    },
+    "sucess_createcoming": 
+    {
+        "msg": "Приход был успешно создан",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "change_coming": 
+    {
+        "msg": "Для корректирования прихода введите дату прихода в следующем формате:\nдд.мм.гг",
+        "phases": {
+            "get_coming_for_change": 1
+        },
+        "msg_options": {}
+    },
+    "get_coming_for_change": 
+    { 
+        "msg": "Data\n\nПришлите что вы хотите изменить в инвентаризации по следующей форме\nНомер элемента | Название продукта| Вес продукта| Цена продукта | Крайний срок годности",
+        "phases": {
+            "get_data_coming_for_change": 1
+        },
+        "msg_options": 
+        { }
+    },
+    "sucess_get_data_coming_for_change": 
+    { 
+        "msg": "Изменение прошло успешно.",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "sales": 
+    {
+        "msg": "Выберите действие ",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Посмотреть статистику", "callback_data": "statics_sales"}
+                    ],
+                    [
+                        {"text": "Заполнить продажи", "callback_data": "create_sales"}
+
+                    ]
+                ]
+            }
+        }
+    },
+    "statics_sales": 
+    {
+        "msg": "Напишите период статистики по следующей форме:\nдд.мм.гг - дд.мм.гг",
+        "phases": {
+            "insert_sale_static": 1
+        },
+        "msg_options": {}
+    },
+    "get_sales": 
+    {
+        "msg": "Вот что получилось найти: Data",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "create_sales": 
+    {
+        "msg": "В следующем сообщении укажите что было продано за день по следующе форме:\nДата\nНазвание продукта | количество ",
+        "phases": {
+            "create_sale": 1
+        },
+        "msg_options": {}
+    },
+    "sucess_createsale": 
+    {
+        "msg": "Продажи были сохранены",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "technological_maps":
+    {
+        "msg": "Выберите действие ",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Просмотр технологических карт", "callback_data": "show_tms"}
+                    ],
+                    [
+                        {"text": "Корректирование технологических карт", "callback_data": "change_tms"}
+                    ],
+                    [
+                        {"text": "Удаление технологических карт", "callback_data": "delete_tms"}
+                    ],
+                    [
+                        {"text": "Создание технологических карт", "callback_data": "create_tms"}
+                    ],
+                    [
+                        {"text": "Калькулятор технологических карт", "callback_data": "calculator_tms"}
+                    ],
+                    [
+                        {"text": "Планирование продуктов", "callback_data": "plan_products_tms"}
+                    ]
+                ]
+            }
+        }
+    },
+    "plan_products_tms": 
+    {
+        "msg": "Заполните форму:\nИмя блюда | Количество",
+        "phases": {
+            "get_products_for_plan": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "calculator_tms":
+    {
+        "msg": "Из предложенного списка пришлите название\nтехнологической карты.Data",
+        "phases": {
+            "get_tm_for_calculate": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "get_tm_for_calculate": 
+    {
+        "msg": "Data",
+        "phases": {
+            "get_tm_for_calculate": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "create_tms": 
+    {
+        "msg": "Введите следующую форму:\nНазвание блюда\nНазвание продукта  брутто (в г) нетто (в г)\nОпишите технологический процесс приготовления\nНапишите всё это одним сообщением.Разделяя каждый подраздел знаком  -  | ",
+        "phases": {
+            "create_tm": 1
+        },
+        "msg_options": {}
+    },
+    "sucess_createtm": 
+    {
+        "msg": "Блюдо занесено в раздел технологические карты",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "delete_tms": 
+    {
+        "msg": "Введите название блюда которое хотите удалить",
+        "phases": {
+            "delete_tm": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "delete_tm_code": 
+    {
+        "msg": "Для подтверждения удаления введите 6-ти значный код.",
+        "phases": {
+            "delete_tm_code": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "sucess_deletetm": 
+    {
+        "msg": "Удаление прошло успешно.",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "show_tms": 
+    {
+        "msg": "Из предложенного списка пришлите название\nтехнологической карты.Data",
+        "phases": {
+            "get_tm": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "change_tms": 
+    {
+        "msg": "Из предложенного списка пришлите название\nтехнологической карты.Data",
+        "phases": {
+            "get_change_tm": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "what_to_change_tms": 
+    { 
+        "msg": "Напишите что вы именно хотите поменять:\n1) Ингридиенты\n2) Описание\n",
+        "phases": {
+            "get_what_to_change_tms": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "changing_tms": 
+    {
+        "msg": "Напишите свои изменения",
+        "phases": {
+            "changing_tms": 1
+        },
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "sucess_changingtms": 
+    {
+        "msg": "Изменения прошли успешно.",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "get_tm": 
+    {
+        "msg": "Data",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "inventory":
+    {
+        "msg": "Выберите действие ",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Создание инвентаризации", "callback_data": "create_inventory"}
+                    ],
+                    [
+                        {"text": "Корректировка инвентаризации", "callback_data": "change_inventroy"}
+                    ],
+                    [
+                        {"text": "Просмотр инвентаризации", "callback_data": "show_inventory"}
+                    ]
+                ]
+            }
+        }
+    },
+    "create_inventory": 
+    {
+        "msg": "Создайте инвентаризацию по следующей форме\nДата\nНазвание продукта| Вес продукта| крайняя дата срока годности.",
+        "phases": {
+            "create_inventory": 1
+        },
+        "msg_options": 
+        { }
+    },
+    "sucess_createinventory": 
+    { 
+        "msg": "Создание прошло успешно.",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "show_inventory": 
+    {
+        "msg": "Введите дату или период дат для просмотра инвентаризаций по следующей форме:\nдд.мм.гг - дд.мм.гг",
+        "phases": {
+            "get_inventory": 1
+        },
+        "msg_options": 
+        { }
+    },
+    "get_inventory": 
+    {
+        "msg": "Вот что получилось найти: Data",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "change_inventroy":
+    {
+        "msg": "Введите дату инвентаризации, которую хотите корректировать по следующей форме\nдд.мм.гг",
+        "phases": {
+            "get_inventory_for_change": 1
+        },
+        "msg_options": 
+        { }
+    },
+    "get_inventory_for_change": 
+    { 
+        "msg": "Data\n\nПришлите что вы хотите изменить в инвентаризации по следующей форме\nНомер элемента | Название продукта| Вес продукта| Крайний срок годности",
+        "phases": {
+            "get_data_inventory_for_change": 1
+        },
+        "msg_options": 
+        { }
+    },
+    "sucess_get_data_inventory_for_change": 
+    { 
+        "msg": "Изменение прошло успешно.",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Главное меню", "callback_data": "main_msg"}
+                    ]
+                ]
+            }
+        }
+    },
+    "reg_msg": 
+    { 
+        "msg": "Введите роль:",
+        "phases": {
+            "reg_account": 1
+        },
+        "msg_options": {}
+    },
+    "error_msg": 
+    { 
+        "msg": "Ошибка при выполнении команды",
+        "phases": {},
+        "msg_options": 
+        { 
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Вернуться назад", "callback_data": "return_to_main"}
+                    ]
+                ]
+            }
+        }
+    }
+}
