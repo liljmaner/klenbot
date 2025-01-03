@@ -41,11 +41,14 @@ class Coming_Tg
             {
                 if (status == 'sucessfuly')
                 {
+                  console.log(get_productel);
+                  console.log(get_productel['weight']);
+                  const calculate_price = get_productel['price'] / get_productel['weight']
                   if (row == null)
                   { 
                     this.Prices.create({
                      "name" :get_productel['name'],
-                     "price": get_productel['price']
+                     "price": calculate_price
                     },(description,status) => 
                     {
                       if (description !=  'sucess' && status != 'sucessfuly')
@@ -58,11 +61,11 @@ class Coming_Tg
                   {
                     this.Prices.change_by_name(get_productel['name'], {
                       "name" :get_productel['name'],
-                      "price": get_productel['price']
+                      "price": calculate_price
                      },(description,status) => 
                      {
                        if (description !=  'sucess' && status != 'sucessfuly')
-                        throw new Error("[Ошибка при добавлении в пра йсы] " + description);
+                        throw new Error("[Ошибка при добавлении в прайсы] " + description);
                        else
                         callback("sucessfuly");
                      })
@@ -92,7 +95,7 @@ class Coming_Tg
                  console.log(" == null")
                  this.Inventory.create({
                   "date": date,  
-                  "inventory": products_array
+                  "products": products_array
                  },(description,status) =>
                  {
                   if (description == 'sucess' && status == 'sucessfuly')
@@ -129,6 +132,7 @@ class Coming_Tg
                     }
                   })
                  })
+                 products_array.forEach((product_el) => delete product_el['price'])
                  this.Inventory.change_by_date(date,row,(description,status) =>
                  {
                   if (description == 'sucess' && status == 'sucessfuly')
@@ -157,8 +161,8 @@ class Coming_Tg
            global.inputs['get_coming_for_change'] = date_to_unix;
            let coming_str = '';
            let get_msg = this.helpers.msg_handler("get_coming_for_change");
-           row['products'].forEach((element,index) => coming_str += `\n${index}) ${element['name']}|${element['weight']}|${element['price']}|${element['expiration_date']}`);
-           get_msg['msg'] = get_msg['msg'].replace("Data",coming_str);
+           row['products'].forEach((element,index) => coming_str += `\n${element['name']}|${element['weight']}|${element['price']}|${element['expiration_date']}`);
+           get_msg['msg'] =  get_msg['msg'].slice(0,288) +  coming_str;
            return callback(get_msg);
           }
           else 
@@ -171,24 +175,45 @@ class Coming_Tg
     {  
           if (status == 'sucessfuly' && row != null)
           {
-            const input_array = user_input.split("|").map((el) => el.trim());
-            row['products'][split_input[0]] = 
-            { 
-               name: input_array[1],
-               weight: parseFloat(input_array[2]),
-               price: parseFloat(input_array[3]),
-               expiration_date: input_array[4]      
-            }
-            this.Coming.change_by_date(row['date'],{
-              "date": row['date'],
-              "products": row['products']
-            }, (description,status) => 
+            const input_array = user_input.split(" ").map((el) => el.trim());
+            if (input_array[1] == '*')
             {
-               if (description ==  'sucess' && status == 'sucessfuly')
-                   return callback(this.helpers.msg_handler('sucess_get_data_inventory_for_change'));
+               row['products'] = row['products'].filter((filter_el) => filter_el['name'] != input_array[0])
+               console.log(row['products']);
+            }
+            else
+            { 
+                const get_index = row['products'].reduce((reduce_acc, reduce_el, reduce_index) => {
+                  if (reduce_el.name === input_array[0]) {
+                    reduce_acc.push(reduce_index);
+                  }
+                  return reduce_acc;
+                 }, [])
+                 if (get_index.length != 0)
+                   row['products'][get_index[0]] = 
+                   { 
+                    "name": input_array[0],
+                    "weight": parseFloat(input_array[1]),
+                    "price": parseFloat(input_array[2]),
+                    "expiration_date": input_array[3]
+                   }
                  else
-                  throw new Error("[Ошибка при изменении] " + description);
-            })
+                   row['products'].push(
+                     {
+                      "name": input_array[0],
+                      "weight": parseFloat(input_array[1]),
+                      "price": parseFloat(input_array[2]),
+                      "expiration_date": input_array[3]
+                     })
+              }
+              console.log(row);
+              this.Coming.change_by_date(global.inputs['get_coming_for_change'],row,(description,status) => 
+               { 
+                  if (description ==  'sucess' && status == 'sucessfuly')
+                    return callback(this.helpers.msg_handler('sucess_get_data_inventory_for_change'));
+                  else
+                   throw new Error("[Ошибка при создании инвентаризации] " + description);
+               })
           }
           else
             throw new Error('[Ошибка при получении]:' + row);
