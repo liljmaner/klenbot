@@ -49,7 +49,8 @@ class Callback_Phase
             });
             console.log(tm_str);
             let get_msg = this.helpers.msg_handler('show_tms');
-            get_msg['msg'] =  get_msg['msg'].replaceAll("Data",tm_str);
+            let get_str = get_msg['msg'].slice(0,64) + "Data";
+            get_msg['msg'] =  get_str.replaceAll("Data",tm_str);
             return callback(get_msg)
          }
          else
