@@ -24,9 +24,11 @@ bot.on('text', (msg) =>
     }
     else
     {
-       TextPhase.call_func("input_phase",msg.text,msg.from.id,(phase_callback) => 
-       { 
-        bot.sendMessage(msg.chat.id,phase_callback['msg'],phase_callback['msg_options'])
+       TextPhase.call_func("input_phase",msg.text,msg.from.id,(get_msg) => 
+       {
+        if (get_msg['data'] != null && typeof(get_msg['data']) != 'undefined')
+          get_msg['msg'] = get_msg['data'] + '\n' + get_msg['msg']; 
+        bot.sendMessage(msg.chat.id,get_msg['msg'],get_msg['msg_options'])
        });
     }
   }
@@ -39,6 +41,7 @@ bot.on('callback_query', (ctx) =>
 { 
   CallbackPhase.call_func(ctx.data,(get_msg) => 
   {
+  
     bot.sendMessage(ctx.message.chat.id,get_msg['msg'],get_msg['msg_options'])
   });
 })

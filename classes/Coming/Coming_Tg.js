@@ -159,10 +159,10 @@ class Coming_Tg
           if (status == 'sucessfuly' && row != null)
           {
            global.inputs['get_coming_for_change'] = date_to_unix;
-           let coming_str = '';
            let get_msg = this.helpers.msg_handler("get_coming_for_change");
-           row['products'].forEach((element,index) => coming_str += `\n${element['name']}|${element['weight']}|${element['price']}|${element['expiration_date']}`);
-           get_msg['msg'] =  get_msg['msg'].slice(0,288) +  coming_str;
+           get_msg['data'] = row['products'].reduce((accumulator, element) => {
+              return accumulator + `\n${element['name']}|${element['weight']}|${element['price']}|${element['expiration_date']}`;
+              }, '');
            return callback(get_msg);
           }
           else 

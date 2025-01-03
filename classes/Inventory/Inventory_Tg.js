@@ -41,7 +41,6 @@ class Inventory_Tg
     {
       if (status == 'sucessfuly' && rows != null) {
         let get_msg = this.helpers.msg_handler("get_inventory");
-        let get_str = get_msg['msg'].slice(0,25) + " Data";
         let inventory_str = '';
         rows.forEach((row_element) => 
           {
@@ -52,7 +51,10 @@ class Inventory_Tg
              })
              inventory_str += '\n\n\n';
           })
-        get_msg['msg'] = get_str.replace("Data", inventory_str);
+        console.log(get_msg);
+        console.log(inventory_str);
+        get_msg['data'] = inventory_str;
+        console.log(get_msg);
         return callback(get_msg);
       }
       else
@@ -68,10 +70,11 @@ class Inventory_Tg
      {
        if (status == 'sucessfuly' && row != null)
        {
-        let inventory_str = '';
         let get_msg = this.helpers.msg_handler("get_inventory_for_change");
-        row['products'].forEach((element,index) => inventory_str += `\n${element['name']}|${element['weight']} | ${element['expiration_date']}`      );
-        get_msg['msg'] =  get_msg['msg'].slice(0,288) +  inventory_str  ;
+        const inventory_str = row['products'].reduce((accumulator, element) => {
+          return accumulator + `\n${element['name']}|${element['weight']} | ${element['expiration_date']}`;
+         }, ''); 
+         get_msg['data'] = inventory_str
         return callback(get_msg);
        }
        else 

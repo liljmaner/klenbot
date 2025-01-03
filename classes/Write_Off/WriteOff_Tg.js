@@ -71,7 +71,6 @@ class WriteOff_Tg
             if (status == 'sucessfuly')
             {
                 let get_msg = this.helpers.msg_handler("get_writeoff");
-                let get_str = get_msg['msg'].slice(0,25) + " Data";
                 let writeoff_str = '';
                 rows.forEach((row_element) => 
                 {
@@ -80,7 +79,7 @@ class WriteOff_Tg
                     writeoff_str += `\n${this.moment.unix(row_element['date']).format('DD.MM.YYYY')} | ${product_el['name']} | ${product_el['reason']}`;
                 })
                 })
-                get_msg['msg'] = get_str.replace("Data", writeoff_str);
+                get_msg['data'] = writeoff_str
                 return callback(get_msg);
             }
             else
@@ -96,10 +95,9 @@ class WriteOff_Tg
               if (row != null && status == 'sucessfuly')
               {
                 let get_msg = this.helpers.msg_handler("get_writeoff_for_change");
-                let get_str = get_msg['msg'].slice(0,25) + " Data" + "\n\nДля изменения заполните следующую форму: Номер элемента | Имя элемента | Причина";
-                let writeoff_str = ''
-                row['products'].forEach((element,index) => writeoff_str += `\n${index}) ${element['name']} | ${element['reason']}`           )
-                get_msg['msg'] =  get_str.replace("Data", writeoff_str);
+                get_msg['data'] = row['products'].reduce((accumulator, element, index) => {
+                    return accumulator + `\n${index}) ${element['name']} | ${element['reason']}`;
+                }, '');
                 return callback(get_msg);
              }
               else

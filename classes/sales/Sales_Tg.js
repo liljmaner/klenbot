@@ -70,7 +70,6 @@ class Sales_Tg
          const from = this.moment(input_array[0],'DD-MM-YYYY').unix();
          const to = this.moment(input_array[1],'DD-MM-YYYY').unix();
          let get_msg = this.helpers.msg_handler("get_sales");
-         let get_str = get_msg['msg'].slice(0,25) + " Data";
          this.Sales.filter_by_date(from,to,(rows,status) => 
          { 
           if (status == 'sucessfuly' && rows != null) {
@@ -80,7 +79,7 @@ class Sales_Tg
                       sales_str +=`\n${element['date']}\n${products_el['name']} |${products_el['count']}\n`;;
                     });
             });
-            get_msg['msg'] = get_str.replace("Data", sales_str);
+            get_msg['data'] = sales_str;
             return callback(get_msg);
         } else {
             throw new Error('[Ошибка при получении]:' + rows);
