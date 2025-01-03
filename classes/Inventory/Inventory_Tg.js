@@ -45,11 +45,12 @@ class Inventory_Tg
         let inventory_str = '';
         rows.forEach((row_element) => 
           {
+             inventory_str += `\n${this.moment.unix(row_element['date']).format("DD.MM.YYYY")}`
              row_element['products'].forEach((inventory_el) => 
              {
               inventory_str += `\n${inventory_el['name']} | ${inventory_el['weight']} | ${inventory_el['expiration_date']}`;
-            })
-            
+             })
+             inventory_str += '\n\n\n';
           })
         get_msg['msg'] = get_str.replace("Data", inventory_str);
         return callback(get_msg);
@@ -62,16 +63,15 @@ class Inventory_Tg
    }
    get_inventory_for_change = (user_input, user_id, callback) => 
    { 
-     const date_to_unix = this.moment(user_input[0], 'DD-MM-YYYY').unix(); 
-     this.Inventory.get_by_date(date_to_unix,(row,status) => 
+    global.inputs['get_inventory_for_change'] = this.moment(user_input, 'DD-MM-YYYY').unix(); 
+     this.Inventory.get_by_date(global.inputs['get_inventory_for_change'],(row,status) => 
      {
        if (status == 'sucessfuly' && row != null)
        {
-        global.inputs['get_inventory_for_change'] = date_to_unix;
         let inventory_str = '';
         let get_msg = this.helpers.msg_handler("get_inventory_for_change");
-        row['products'].forEach((element,index) => inventory_str += `\n${index}) ${element['name']}|${element['weight']} | ${element['expiration_date']}`      );
-        get_msg['msg'] = get_msg['msg'].replace("Data",inventory_str);
+        row['products'].forEach((element,index) => inventory_str += `\n${element['name']}|${element['weight']} | ${element['expiration_date']}`      );
+        get_msg['msg'] =  get_msg['msg'].slice(0,288) +  inventory_str  ;
         return callback(get_msg);
        }
        else 
@@ -84,23 +84,44 @@ class Inventory_Tg
      {  
        if (status == 'sucessfuly' && row != null)
        {
-         const input_array = user_input.split("|").map((el) => el.trim());
-         row['products'][split_input[0]] = 
-         { 
-            name: input_array[1],
-            weight: parseFloat(input_array[2]),
-            expiration_date: input_array[3]      
-         }
-         this.Inventory.change_by_date(row['date'],{
-           "date": row['date'],
-           "products": row['products']
-         }, (description,status) => 
+         const input_array = user_input.split(" ")
+         input_array.forEach((input_el) => input_el.trim())
+         console.log(input_array);
+         if (input_array[1] == '*')
          {
-            if (description ==  'sucess' && status == 'sucessfuly')
-                return callback(this.helpers.msg_handler('sucess_get_data_inventory_for_change'));
-              else
-               throw new Error("[Ошибка при создании инвентаризации] " + description);
-         })
+          row['products'] = row['products'].filter((filter_el) => filter_el['name'] != input_array[0])
+          console.log(row['products']);
+         }
+         else
+         { 
+           const get_index = row['products'].reduce((reduce_acc, reduce_el, reduce_index) => {
+             if (reduce_el.name == input_array[0]) {
+               reduce_acc.push(reduce_index);
+             }
+             return reduce_acc;
+            }, [])
+            if (get_index.length != 0)
+              row['products'][get_index[0]] = 
+              { 
+               "name": input_array[0],
+               "weight": input_array[1],
+               "expiration_date": input_array[2],
+              }
+            else
+              row['products'].push(
+                {
+                  "name": input_array[0],
+                  "weight": input_array[1],
+                  "expiration_date": input_array[2],
+                })
+         }
+         this.Inventory.change_by_date(global.inputs['get_inventory_for_change'],row,(description,status) => 
+          { 
+             if (description ==  'sucess' && status == 'sucessfuly')
+               return callback(this.helpers.msg_handler('sucess_get_data_inventory_for_change'));
+             else
+              throw new Error("[Ошибка при создании инвентаризации] " + description);
+          })
        }
        else
          throw new Error('[Ошибка при получении]:' + row);
