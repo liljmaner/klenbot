@@ -20,8 +20,8 @@ class Tm_Tg
             const get_inginfo = element.split(" ");
             ingredients_array.push({
               "name": get_inginfo[0],
-              "weight": get_inginfo[1],
-              "brutto": get_inginfo[2],
+              "brutto": get_inginfo[1],
+              "netto": get_inginfo[2],
             })
           })
           this.Techonological_Maps.create({
@@ -67,9 +67,9 @@ class Tm_Tg
                 if (status == 'sucessfuly')
                 {
                  let ing_str = ''
-                 row['ingredients'].forEach(ing_el => ing_str += `\n${ing_el['name']} | ${ing_el['weight']} | ${ing_el['brutto']}`  )
+                 row['ingredients'].forEach(ing_el => ing_str += `\n${ing_el['name']} | ${ing_el['brutto']} | ${ing_el['netto']}`  )
                  let get_msg = this.helpers.msg_handler('get_tm');
-                 get_msg['msg'] = `${row['name']}|\n${ing_str}\n${row['descriptions']}`
+                 get_msg['msg'] = `${row['name']}|\n${ing_str}\n\n${row['descriptions']}`
                  return  callback(get_msg);
                 }
                 else
@@ -103,10 +103,10 @@ class Tm_Tg
                                 const get_inginfo = element.split(" ");
                                 ingredients_array.push({
                                   "name": get_inginfo[0],
-                                  "weight": get_inginfo[1],
-                                  "brutto": get_inginfo[2],
+                                  "brutto": get_inginfo[1],
+                                  "netto": get_inginfo[2],
                                 })
-                                
+                                row['ingredients'] = ingredients_array;
                               })
                             }
                             else
@@ -148,11 +148,11 @@ class Tm_Tg
                          if (prices_row == null)
                          {
                            console.log("null");
-                           tm_str += `${ingredient['name']} | ${ingredient['weight']} | ${ingredient['brutto']} | x г/руб\n`
+                           tm_str += `${ingredient['name']} | ${ingredient['brutto']} | ${ingredient['netto']} | x кг/руб\n`
                          }
                          else
                          {
-                          tm_str += `${ingredient['name']} | ${ingredient['weight']} | ${ingredient['brutto']} | ${prices_row['price']} г/руб\n`
+                          tm_str += `${ingredient['name']} | ${ingredient['brutto']} | ${ingredient['netto']} |    ${parseFloat(prices_row['price']) *  (parseFloat(ingredient['brutto']) / 1000)} рублей\n`
     
                          }
                          if (index + 1 == tm_row['ingredients'].length)
@@ -195,7 +195,7 @@ class Tm_Tg
               {
                 row['ingredients'].forEach((ingredients_el) => 
                 {
-                  set_str += `${ingredients_el['name']} | ${parseFloat(ingredients_el['weight']) * get_info[1]}\n`         
+                  set_str += `${ingredients_el['name']} | ${parseFloat(ingredients_el['brutto']) * get_info[1]}\n`         
                 })
                 if (index + 1 == input_array.length)
                 {
@@ -210,7 +210,7 @@ class Tm_Tg
       get_str((str) => 
       { 
         let get_msg = this.helpers.msg_handler('get_tm_for_calculate');
-        get_msg['msg'] = get_msg['msg'].replace("Data",str)
+        get_msg['msg'] = str
         return callback(get_msg);
       })
     }
