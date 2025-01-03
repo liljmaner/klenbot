@@ -37,7 +37,7 @@ class Sales_Tg
                       {
                          if (ingredients['name'] == products['name'])
                          {
-                           products['weight'] -= parseFloat(ingredients['weight']);
+                           products['brutto'] -= parseFloat(ingredients['weight']);
                          }
                       })
                     })
