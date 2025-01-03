@@ -90,12 +90,11 @@ class WriteOff_Tg
     }
     get_writeoff_for_change = (user_input,user_id,callback) => 
     {
-        const date_to_unix = this.moment(user_input, 'DD-MM-YYYY').unix()
-        this.Write_Off.get_by_date(date_to_unix, (row,status) => 
+        global.inputs['get_writeoff_for_change'] = this.moment(user_input, 'DD-MM-YYYY').unix()
+        this.Write_Off.get_by_date(global.inputs['get_writeoff_for_change'], (row,status) => 
         { 
               if (row != null && status == 'sucessfuly')
               {
-                global.inputs['get_writeoff_for_change'] = date_to_unix;
                 let get_msg = this.helpers.msg_handler("get_writeoff_for_change");
                 let get_str = get_msg['msg'].slice(0,25) + " Data" + "\n\nДля изменения заполните следующую форму: Номер элемента | Имя элемента | Причина";
                 let writeoff_str = ''
@@ -115,11 +114,12 @@ class WriteOff_Tg
             if (row != null && status == 'sucessfuly')
             {
                 const input_array = user_input.split("|");
-                row['products'][input_array[0]] = 
+                row['products'][parseInt(input_array[0])] = 
                 { 
                     "name": input_array[1].trim(),
                     "reason": input_array[2].trim(),
                 }
+                console.log(row)
                 this.Write_Off.change_by_date(global.inputs['get_writeoff_for_change'],row,(description,status) => 
                 {
                     if (description == 'sucess' && status == 'sucessfuly')
