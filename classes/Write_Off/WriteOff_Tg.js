@@ -22,7 +22,7 @@ class WriteOff_Tg
           console.log(element);
           const get_product = element.split("|");
           product_array.push({
-             "name": get_product[0].trim(),
+             "name": get_product[0].trim().toLowerCase(),
              "reason": get_product[1].trim(),
           })
           this.Inventory.get_by_date(date,(row,status) => 
@@ -30,7 +30,7 @@ class WriteOff_Tg
               console.log(row);
               if (row != null && status == 'sucessfuly' )
               {
-                const get_filtred = row['products'].filter((element) => element['name'] != get_product[0].trim())
+                const get_filtred = row['products'].filter((element) => element['name'].toLowerCase() != get_product[0].trim().toLowerCase())
                 console.log(get_filtred);
                 this.Inventory.change_by_date(date, {
                     "date": date,
@@ -114,7 +114,7 @@ class WriteOff_Tg
                 const input_array = user_input.split("|");
                 row['products'][parseInt(input_array[0])] = 
                 { 
-                    "name": input_array[1].trim(),
+                    "name": input_array[1].trim().toLowerCase(),
                     "reason": input_array[2].trim(),
                 }
                 console.log(row)

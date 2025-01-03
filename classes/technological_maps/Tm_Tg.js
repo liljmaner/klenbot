@@ -19,13 +19,13 @@ class Tm_Tg
   
             const get_inginfo = element.split(" ");
             ingredients_array.push({
-              "name": get_inginfo[0],
+              "name": get_inginfo[0].toLowerCase(),
               "brutto": get_inginfo[1],
               "netto": get_inginfo[2],
             })
           })
           this.Techonological_Maps.create({
-            "name": input_array[0].trim(),
+            "name": input_array[0].trim().toLowerCase(),
             "ingredients": ingredients_array,
             "descriptions": input_array[2].replaceAll("\n","")
           }, (description,status) => 
@@ -47,7 +47,7 @@ class Tm_Tg
            const get_code = require('../../main.json')['secret_code'];
            if (get_code == user_input)
            {
-              this.Techonological_Maps.delete_by_name(global.inputs['delete_tm'], (description,status) => 
+              this.Techonological_Maps.delete_by_name(global.inputs['delete_tm'].toLowerCase(), (description,status) => 
               {
                if (description == 'sucess' && status == 'sucessfuly')
                  return callback(this.helpers.msg_handler("sucess_deletetm"));
@@ -102,7 +102,7 @@ class Tm_Tg
                               { 
                                 const get_inginfo = element.split(" ");
                                 ingredients_array.push({
-                                  "name": get_inginfo[0],
+                                  "name": get_inginfo[0].toLowerCase(),
                                   "brutto": get_inginfo[1],
                                   "netto": get_inginfo[2],
                                 })
@@ -141,7 +141,7 @@ class Tm_Tg
                  { 
                     console.log(ingredient);
                     
-                    this.Prices.get_by_name(ingredient['name'], (prices_row,status) => 
+                    this.Prices.get_by_name(ingredient['name'].toLowerCase(), (prices_row,status) => 
                     {
                        if (status == 'sucessfuly')
                        {

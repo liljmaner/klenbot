@@ -22,7 +22,7 @@ class Coming_Tg
        
        const get_product =  element.split("|");
        products_array.push({
-         "name": get_product[0].trim(),
+         "name": get_product[0].trim().toLowerCase(),
          "weight": parseFloat(get_product[1].trim()),
          "price": parseFloat(get_product[2].trim()),
          "expiration_date": get_product[3].trim()
@@ -37,7 +37,7 @@ class Coming_Tg
       {
         const insert_into_prices = (get_productel,callback) => 
         {
-          this.Prices.get_by_name(get_productel['name'], (row,status) => 
+          this.Prices.get_by_name(get_productel['name'].toLowerCase(), (row,status) => 
             {
                 if (status == 'sucessfuly')
                 {
@@ -47,7 +47,7 @@ class Coming_Tg
                   if (row == null)
                   { 
                     this.Prices.create({
-                     "name" :get_productel['name'],
+                     "name" :get_productel['name'].toLowerCase(),
                      "price": calculate_price
                     },(description,status) => 
                     {
@@ -59,8 +59,8 @@ class Coming_Tg
                   }
                   else
                   {
-                    this.Prices.change_by_name(get_productel['name'], {
-                      "name" :get_productel['name'],
+                    this.Prices.change_by_name(get_productel['name'].toLowerCase(), {
+                      "name" :get_productel['name'].toLowerCase(),
                       "price": calculate_price
                      },(description,status) => 
                      {
@@ -115,7 +115,7 @@ class Coming_Tg
                       row['products'].forEach((row_productel,index) => 
                         {
                           let is_added = false;
-                          if (products_el['name'] == row_productel['name'])
+                          if (products_el['name'].toLowerCase() == row_productel['name'].toLowerCase())
                           {
                             console.log("sucess");
                             row_productel['weight'] += products_el['weight'];
@@ -124,7 +124,7 @@ class Coming_Tg
                           }
                           if (is_added == false && index + 1 == row['products'].length)
                              row['products'].push({
-                               "name": products_el['name'],
+                               "name": products_el['name'].toLowerCase(),
                                "weight": products_el['weight'],
                                "expiration_date": products_el['expiration_date']
                              })
@@ -192,7 +192,7 @@ class Coming_Tg
                  if (get_index.length != 0)
                    row['products'][get_index[0]] = 
                    { 
-                    "name": input_array[0],
+                    "name": input_array[0].toLowerCase(),
                     "weight": parseFloat(input_array[1]),
                     "price": parseFloat(input_array[2]),
                     "expiration_date": input_array[3]
@@ -200,7 +200,7 @@ class Coming_Tg
                  else
                    row['products'].push(
                      {
-                      "name": input_array[0],
+                      "name": input_array[0].toLowerCase(),
                       "weight": parseFloat(input_array[1]),
                       "price": parseFloat(input_array[2]),
                       "expiration_date": input_array[3]

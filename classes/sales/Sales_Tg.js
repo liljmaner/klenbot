@@ -22,7 +22,7 @@ class Sales_Tg
       { 
          const get_product =  element.split("|");
          products_array.push({
-           "name": get_product[0].trim(),
+           "name": get_product[0].trim().toLowerCase(),
            "count": parseFloat(get_product[1].trim()),
          })
          this.Techonological_Maps.get_by_name(get_product[0].trim(), (techo_row,techo_status) => 
@@ -35,7 +35,7 @@ class Sales_Tg
                     {
                        inventory_row['products'].forEach((products) => 
                       {
-                         if (ingredients['name'] == products['name'])
+                         if (ingredients['name'].toLowerCase() == products['name'].toLowerCase())
                          {
                            products['brutto'] -= parseFloat(ingredients['weight']);
                          }

@@ -17,7 +17,7 @@ class Inventory_Tg
     const get_inventoryel = input_array.map((element) => {
           const split_element = element.split("|");
           return {
-               "name": split_element[0].trim(),
+               "name": split_element[0].trim().toLowerCase(),
                "weight": parseFloat(split_element[1].trim()),
                "expiration_date": split_element[2].trim(),
           }
@@ -92,13 +92,13 @@ class Inventory_Tg
          console.log(input_array);
          if (input_array[1] == '*')
          {
-          row['products'] = row['products'].filter((filter_el) => filter_el['name'] != input_array[0])
+          row['products'] = row['products'].filter((filter_el) => filter_el['name'].toLowerCase() != input_array[0])
           console.log(row['products']);
          }
          else
          { 
            const get_index = row['products'].reduce((reduce_acc, reduce_el, reduce_index) => {
-             if (reduce_el.name == input_array[0]) {
+             if (reduce_el.name == input_array[0].toLowerCase()) {
                reduce_acc.push(reduce_index);
              }
              return reduce_acc;
@@ -106,14 +106,14 @@ class Inventory_Tg
             if (get_index.length != 0)
               row['products'][get_index[0]] = 
               { 
-               "name": input_array[0],
+               "name": input_array[0].toLowerCase(),
                "weight": input_array[1],
                "expiration_date": input_array[2],
               }
             else
               row['products'].push(
                 {
-                  "name": input_array[0],
+                  "name": input_array[0].toLowerCase(),
                   "weight": input_array[1],
                   "expiration_date": input_array[2],
                 })
